@@ -18,7 +18,12 @@
           { data: "id" },
           { data: "name" },
           { data: "type" },
-          { data: "regionId" },
+          { 
+            data: null, 
+            render: (data, type, row) => {
+              return data.region.Regency.Province.name + ", " + data.region.Regency.name + ", " + data.region.name;
+            }
+          },
         ],
         columnDefs: [ 
           {
@@ -29,7 +34,7 @@
           },
           {
             className: 'dt-center',
-            targets: [3, 4],
+            targets: 3,
           }, 
         ],
         select: {

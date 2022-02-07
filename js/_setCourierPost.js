@@ -18,6 +18,7 @@
           { data: "fullName" },
           { data: "phoneNumber" },
           { data: "email" },
+          { data: "id" },
         ],
         columnDefs: [
           {
@@ -25,6 +26,11 @@
             className: 'select-checkbox',
             targets: 0,
             defaultContent: '',
+          },
+          {
+            targets: 4,
+            visible: false,
+            searchable: false
           },
         ],
         select: {
