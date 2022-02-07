@@ -5,7 +5,7 @@
 
   // load data tables
   $.ajax({
-    url: `${url}/couriers`,
+    url: `${url}/services`,
     type: "GET",
     beforeSend: (xhr) => {
       xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
@@ -15,9 +15,10 @@
         data: res,
         columns: [
           { data: null },
-          { data: "fullName" },
-          { data: "phoneNumber" },
-          { data: "email" },
+          { data: "id" },
+          { data: "name" },
+          { data: "setPrice" },
+          { data: "description" },
         ],
         columnDefs: [
           {
@@ -25,6 +26,10 @@
             className: 'select-checkbox',
             targets: 0,
             defaultContent: '',
+          },
+          {
+            className: 'dt-right',
+            targets: 3
           },
         ],
         select: {
