@@ -44,8 +44,9 @@ $.ajaxSetup({
     });
   }
   const pathname = window.location.pathname;
-  if (header === null && pathname != "/signin.html") {
-    window.location.href = "/signin.html";
+  // console.log(pathname);
+  if (header === null && pathname != "/home/staf/electron-quick-start/signin.html") {
+    window.location.href = "/home/staf/electron-quick-start/signin.html";
   }
 
   // Back to top button
@@ -116,7 +117,7 @@ $.ajaxSetup({
             Cookies.set("dataUser", JSON.stringify(dataUser));
           }
           // get to index.html
-          window.location.href = "/index.html";
+          window.location.href = "/home/staf/electron-quick-start/index.html";
         }
       },
       statusCode: {
@@ -140,7 +141,7 @@ $.ajaxSetup({
     Cookies.remove("header");
     Cookies.remove("dataUser");
     spinner();
-    window.location.href = "/signin.html";
+    window.location.href = "/home/staf/electron-quick-start/signin.html";
   };
 
   $("#logout").click(() => {

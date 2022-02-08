@@ -1,25 +1,22 @@
 {
-  "name": "admin-jeb",
+  "name": "electron-quick-start",
   "version": "1.0.0",
-  "description": "Admin page for jeb-deploy.com",
-  "main": "index.html",
+  "description": "A minimal Electron application",
+  "main": "main.js",
   "scripts": {
-    "test": "lite-server"
+    "start": "electron ."
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/x00001101/admin-jeb.git"
-  },
+  "repository": "https://github.com/electron/electron-quick-start",
   "keywords": [
-    "admin",
-    "dashboard"
+    "Electron",
+    "quick",
+    "start",
+    "tutorial",
+    "demo"
   ],
-  "author": "Masandy",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/x00001101/admin-jeb/issues"
-  },
+  "author": "GitHub",
+  "license": "CC0-1.0",
   "devDependencies": {
-    "lite-server": "^2.6.1"
+    "electron": "^17.0.0"
   }
 }
