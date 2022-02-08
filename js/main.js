@@ -1,5 +1,9 @@
+console.log(window.location.pathname);
+
 // global variable
 const url = "https://sandbag.jeb-deploy.com";
+
+const PATHURL = "/C:/Users/Masandy/admin-jeb/";
 
 // Spinner
 var spinner = () => {
@@ -45,8 +49,8 @@ $.ajaxSetup({
   }
   const pathname = window.location.pathname;
   // console.log(pathname);
-  if (header === null && pathname != "/home/staf/electron-quick-start/signin.html") {
-    window.location.href = "/home/staf/electron-quick-start/signin.html";
+  if (header === null && pathname != PATHURL + "signin.html") {
+    window.location.href = PATHURL + "signin.html";
   }
 
   // Back to top button
@@ -117,7 +121,7 @@ $.ajaxSetup({
             Cookies.set("dataUser", JSON.stringify(dataUser));
           }
           // get to index.html
-          window.location.href = "/home/staf/electron-quick-start/index.html";
+          window.location.href = PATHURL + "index.html";
         }
       },
       statusCode: {
@@ -141,7 +145,7 @@ $.ajaxSetup({
     Cookies.remove("header");
     Cookies.remove("dataUser");
     spinner();
-    window.location.href = "/home/staf/electron-quick-start/signin.html";
+    window.location.href = PATHURL + "signin.html";
   };
 
   $("#logout").click(() => {
