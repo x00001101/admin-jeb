@@ -3,6 +3,7 @@
 const { contextBridge } = require("electron");
 
 const { print, getDefaultPrinter } = require("pdf-to-printer");
+const fs = require("fs");
 
 contextBridge.exposeInMainWorld("electron", {
   doPrint: () => {
@@ -10,5 +11,14 @@ contextBridge.exposeInMainWorld("electron", {
   },
   doGetDefaultPrinter: () => {
     getDefaultPrinter().then(console.log);
+  },
+  savePdf: (data) => {
+    try {
+      fs.writeFileSync("file.pdf", data);
+      console.log("Success in writing file");
+    } catch (err) {
+      console.log("Error in writing file");
+      console.log(err);
+    }
   },
 });
