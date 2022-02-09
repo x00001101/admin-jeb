@@ -22,14 +22,11 @@
             defaultContent: "",
           },
         ],
-        // select: {
-        //   style: "os",
-        //   selector: "td:first-child",
-        // },
+        select: {
+          style: "multi+shift",
+          selector: "td:first-child",
+        },
         order: [[1, "asc"]],
-      });
-      $("#table-order tbody").on("click", "tr", function () {
-        $(this).toggleClass("selected");
       });
     },
     statusCode: {
