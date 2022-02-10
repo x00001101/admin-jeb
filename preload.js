@@ -1,24 +1,12 @@
 // All of the Node.js APIs are available in the preload process.
 // It has the same sandbox as a Chrome extension.
-const { contextBridge } = require("electron");
+const { contextBridge, ipcRenderer } = require("electron");
 
-const { print, getDefaultPrinter } = require("pdf-to-printer");
-const fs = require("fs");
-
-contextBridge.exposeInMainWorld("electron", {
-  doPrint: () => {
-    print("temp/tes.pdf").then((data) => console.log(data));
+contextBridge.exposeInMainWorld("jeb", {
+  printAawb: async (id) => {
+    ipcRenderer.send("printAwb", id);
   },
-  doGetDefaultPrinter: () => {
-    getDefaultPrinter().then(console.log);
-  },
-  savePdf: (data) => {
-    try {
-      fs.writeFileSync("file.pdf", data);
-      console.log("Success in writing file");
-    } catch (err) {
-      console.log("Error in writing file");
-      console.log(err);
-    }
-  },
-});
+  getPathName: () => {
+    console.log(ipcRenderer.send("getPath"));
+  }
+}); 

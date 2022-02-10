@@ -20,9 +20,11 @@
     "electron": "^17.0.0"
   },
   "dependencies": {
+    "axios": "^0.25.0",
     "bwip-js": "^3.0.4",
     "pdf-to-printer": "^5.2.0",
     "pdfmake": "^0.2.4",
-    "qrcode": "^1.5.0"
+    "qrcode": "^1.5.0",
+    "unix-print": "^1.1.0"
   }
 }

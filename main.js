@@ -1,20 +1,27 @@
 // Modules to control application life and create native browser window
-const { app, BrowserWindow } = require("electron");
+const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
+const fs = require("fs");
+const axios = require("axios");
+
+const { print, getDefaultPrinter } = require("unix-print");
+
+const fullPath = app.getAppPath();
+
 function createWindow() {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
+    // width: 800,
+    // height: 600,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
       nodeIntegration: true,
     },
   });
 
+  mainWindow.maximize();
   // and load the index.html of the app.
   mainWindow.loadFile("index.html");
-
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()
 }
@@ -24,6 +31,41 @@ function createWindow() {
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
   createWindow();
+
+  const url = "https://sandbag.jeb-deploy.com";
+  ipcMain.on("printAwb", (event, id) => {
+    const filePath = `temp/${id}.pdf`;
+    const writer = fs.createWriteStream(filePath);
+    axios({
+      method: "GET",
+      url: `${url}/createPdfAwb?id=${id}`,
+      responseType: "stream"
+    }).then((response) => {
+      return new Promise( (resolve, reject) => {
+        response.data.pipe(writer);
+        let error = null;
+        writer.on('error', err => {
+          error = err;
+          writer.close();
+          reject(err);
+        });
+        writer.on('close', async () => {
+          if (!error) {
+            resolve(true);
+            const option = ["-o fit-to-page", "-o page-left=-15"];
+            const prin = await print(filePath, "zebri", option);
+            if (prin.stderr == "") {
+              fs.unlinkSync(filePath);
+            }
+          }
+        });
+      });
+    });
+  });
+
+  ipcMain.on("getPath", (event) => {
+    return fullPath;
+  })
 
   app.on("activate", function () {
     // On macOS it's common to re-create a window in the app when the

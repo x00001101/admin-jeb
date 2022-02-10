@@ -1,9 +1,9 @@
-console.log(window.location.pathname);
+// console.log(window.location.pathname);
 
 // global variable
 const url = "https://sandbag.jeb-deploy.com";
 
-const PATHURL = "/C:/Users/Masandy/admin-jeb/";
+const PATHURL = "/home/staf/admin-jeb/";
 
 // Spinner
 var spinner = () => {
