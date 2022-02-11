@@ -3,6 +3,24 @@
 
   const accessToken = localStorage.getItem("header") || Cookies.get("header");
 
+  const formatDate = (date) => {
+    const monthNames = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
+    const dateObj = new Date(date);
+    const month = monthNames[dateObj.getMonth()];
+    const day = String(dateObj.getDate()).padStart(2, '0');
+    const year = dateObj.getFullYear();
+    const output = day + '/' + month + '/' + year;
+    return output;
+  }
+
+  $("#print").click( () => {
+    var tbl = $("#table-order").DataTable();
+    var dt = tbl.rows({ selected: true }).data();
+    for (var i = 0; i < dt.length; i++) {
+      window.jeb.printAawb(dt[i]["id"]);
+    }
+  });
+
   // load data tables
   $.ajax({
     url: `${url}/orders`,
@@ -16,6 +34,13 @@
         columns: [
           { data: null },
           { data: "id" },
+          { 
+            data: null,
+            render: (data, type, row) => {
+              var output = formatDate(data.createdAt);
+              return output;
+            } 
+          },
           {
             data: null,
             render: (data, type, row) => {
@@ -41,29 +66,39 @@
               return data.Billing.BillingTypeId;
             },
           },
-          { data: "itemValue" },
-          {
+          { 
             data: null,
             render: (data, type, row) => {
-              return data.Billing.insuranceAmount;
+              var val = data.itemValue;
+              return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(val);
             },
           },
           {
             data: null,
             render: (data, type, row) => {
-              return data.Billing.voucherAmount;
+              var val = data.Billing.insuranceAmount;
+              return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(val);
             },
           },
           {
             data: null,
             render: (data, type, row) => {
-              return data.Billing.serviceAmount;
+              var val = data.Billing.voucherAmount;
+              return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(val);
             },
           },
           {
             data: null,
             render: (data, type, row) => {
-              return Number(data.itemValue) + Number(data.Billing.totalAmount);
+              var val = data.Billing.serviceAmount;
+              return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(val);
+            },
+          },
+          {
+            data: null,
+            render: (data, type, row) => {
+              var val = Number(data.itemValue) + Number(data.Billing.totalAmount);
+              return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(val);
             },
           },
         ],
@@ -79,7 +114,7 @@
           style: "multi+shift",
           selector: "td:not(:first-child)",
         },
-        order: [[1, "asc"]],
+        // order: [[1, "asc"]],
       });
     },
     statusCode: {

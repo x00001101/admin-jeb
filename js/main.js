@@ -3,7 +3,9 @@
 // global variable
 const url = "https://sandbag.jeb-deploy.com";
 
-const PATHURL = "/home/staf/admin-jeb/";
+const getPath = () => {
+  return window.jeb.getPath();
+}
 
 // Spinner
 var spinner = () => {
@@ -24,9 +26,9 @@ $.ajaxSetup({
   },
 });
 
-(($) => {
+(async ($) => {
   "use strict";
-
+  const PATHURL = await getPath();
   const removeActiveLinkClass = () => {
     $(".nav-item.nav-link").each((i, v) => {
       $(v).removeClass("active");
@@ -49,8 +51,8 @@ $.ajaxSetup({
   }
   const pathname = window.location.pathname;
   // console.log(pathname);
-  if (header === null && pathname != PATHURL + "signin.html") {
-    window.location.href = PATHURL + "signin.html";
+  if (header === null && pathname != PATHURL + "/signin.html") {
+    window.location.href = PATHURL + "/signin.html";
   }
 
   // Back to top button
@@ -121,7 +123,7 @@ $.ajaxSetup({
             Cookies.set("dataUser", JSON.stringify(dataUser));
           }
           // get to index.html
-          window.location.href = PATHURL + "index.html";
+          window.location.href = PATHURL + "/index.html";
         }
       },
       statusCode: {
@@ -145,7 +147,7 @@ $.ajaxSetup({
     Cookies.remove("header");
     Cookies.remove("dataUser");
     spinner();
-    window.location.href = PATHURL + "signin.html";
+    window.location.href = PATHURL + "/signin.html";
   };
 
   $("#logout").click(() => {

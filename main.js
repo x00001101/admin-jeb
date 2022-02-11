@@ -13,6 +13,7 @@ function createWindow() {
   const mainWindow = new BrowserWindow({
     // width: 800,
     // height: 600,
+    autoHideMenuBar: true,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
       nodeIntegration: true,
@@ -63,8 +64,12 @@ app.whenReady().then(() => {
     });
   });
 
-  ipcMain.on("getPath", (event) => {
-    return fullPath;
+  var mainProcess = {
+    path: app.getAppPath()
+  };
+  ipcMain.handle("getGlobalVar", (event, arg) => {
+    // event.sender.send("receiveGlobalVar", mainProcess[arg]);
+    return mainProcess[arg];
   })
 
   app.on("activate", function () {

@@ -6,7 +6,12 @@ contextBridge.exposeInMainWorld("jeb", {
   printAawb: async (id) => {
     ipcRenderer.send("printAwb", id);
   },
-  getPathName: () => {
-    console.log(ipcRenderer.send("getPath"));
+  getPath: async () => {
+    // ipcRenderer.send("getGlobalVar", "path");
+    const result = await ipcRenderer.invoke("getGlobalVar", "path");
+    return result;
+    // await ipcRenderer.on("receiveGlobalVar", (event, arg) => {
+      
+    // });
   }
 }); 
