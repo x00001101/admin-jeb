@@ -268,3 +268,7 @@
   background: var(--dark);
   border-color: var(--primary);
 }
+
+table.table td.selector {
+  cursor: pointer;
+}

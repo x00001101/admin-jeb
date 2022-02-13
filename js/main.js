@@ -3,9 +3,9 @@
 // global variable
 const url = "https://sandbag.jeb-deploy.com";
 
-const getPath = () => {
-  return window.jeb.getPath();
-}
+const getGlobalVar = (variable) => {
+  return window.jeb.getGlobalVar(variable);
+};
 
 // Spinner
 var spinner = () => {
@@ -26,9 +26,50 @@ $.ajaxSetup({
   },
 });
 
+// myAlert dialog
+alertify.myDialog ||
+  alertify.dialog("myDialog", function factory() {
+    return {
+      main: function (content) {
+        this.setContent(content);
+      },
+      setup: function () {
+        return {
+          options: {
+            frameless: true,
+          },
+        };
+      },
+    };
+  });
+alertify.regionDialog ||
+  alertify.dialog(
+    "regionDialog",
+    function factory() {
+      return {
+        main: function (content) {
+          this.setContent(content);
+        },
+        setup: function () {
+          return {
+            buttons: [{ text: "Ok", key: 13 /*Enter*/ }],
+            focus: { element: 0 },
+            options: {
+              title: "Daftar Wilayah",
+              frameless: false,
+              startMaximized: true,
+            },
+          };
+        },
+      };
+    },
+    false,
+    "alert"
+  );
+
 (async ($) => {
   "use strict";
-  const PATHURL = await getPath();
+  const PATHURL = await getGlobalVar("path");
   const removeActiveLinkClass = () => {
     $(".nav-item.nav-link").each((i, v) => {
       $(v).removeClass("active");
@@ -51,6 +92,7 @@ $.ajaxSetup({
   }
   const pathname = window.location.pathname;
   // console.log(pathname);
+  // redirect to sign in
   if (header === null && pathname != PATHURL + "/signin.html") {
     window.location.href = PATHURL + "/signin.html";
   }
@@ -156,7 +198,7 @@ $.ajaxSetup({
 
   const getPage = (pageName) => {
     $.ajax({
-      url: `_${pageName}.html`,
+      url: `pages/_${pageName}.html`,
       success: (res) => {
         $("#page-container").html(res);
         removeActiveLinkClass();

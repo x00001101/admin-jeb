@@ -1,0 +1,50 @@
+<div class="container-fluid pt-4 px-4">
+    <div class="row g-4">
+        <div class="col-12">
+            <div class="rounded h-100 p-4">
+                <h6 class="mb-4">Form Pembuatan Pos Baru</h6>
+                <form>
+                    <div class="mb-3">
+                        <label for="idPost" class="form-label">Pos ID</label>
+                        <input type="text" class="form-control" id="txtPostId"
+                            aria-describedby="postHelp" placeholder="Contoh: JBG-01">
+                        <div id="postHelp" class="form-text">Kode TLC Post
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="idPost" class="form-label">Nama Pos</label>
+                        <input type="text" class="form-control" id="txtPostName"
+                            aria-describedby="namaPosHelp" placeholder="Contoh: Drop Point Jombang (Kecamatan Tembalang)">
+                        <div id="namaPosHelp" class="form-text">Nama dan keterangan Post
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="idPost" class="form-label">Tipe Pos</label>
+                        <select class="form-select mb-3" aria-label="Default select example" id="txtPostType">
+                            <option selected>- Pilih Tipe -</option>
+                            <option value="DP">Drop Point</option>
+                            <option value="GT">Gateway</option>
+                            <option value="TC">Transit Center</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="districtId" class="form-label">District ID</label>
+                        
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="labelDistrict">...</span>
+                            </div>
+                            <input type="text" class="form-control" id="txtDistrictId" placeholder="Contoh: 3517020"
+                                aria-describedby="districtHelp">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="button" id="btn_regionPage"><i class="fa fa-search"></i></button>
+                            </div>
+                        </div>
+                        <div id="districtHelp" class="form-text">Kode area kecamatan.
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

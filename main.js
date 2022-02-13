@@ -6,8 +6,6 @@ const axios = require("axios");
 
 const { print, getDefaultPrinter } = require("unix-print");
 
-const fullPath = app.getAppPath();
-
 function createWindow() {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
@@ -40,17 +38,17 @@ app.whenReady().then(() => {
     axios({
       method: "GET",
       url: `${url}/createPdfAwb?id=${id}`,
-      responseType: "stream"
+      responseType: "stream",
     }).then((response) => {
-      return new Promise( (resolve, reject) => {
+      return new Promise((resolve, reject) => {
         response.data.pipe(writer);
         let error = null;
-        writer.on('error', err => {
+        writer.on("error", (err) => {
           error = err;
           writer.close();
           reject(err);
         });
-        writer.on('close', async () => {
+        writer.on("close", async () => {
           if (!error) {
             resolve(true);
             const option = ["-o fit-to-page", "-o page-left=-15"];
@@ -65,12 +63,20 @@ app.whenReady().then(() => {
   });
 
   var mainProcess = {
-    path: app.getAppPath()
+    path: app.getAppPath(),
+    platform: process.platform,
   };
+
   ipcMain.handle("getGlobalVar", (event, arg) => {
-    // event.sender.send("receiveGlobalVar", mainProcess[arg]);
-    return mainProcess[arg];
-  })
+    let result = mainProcess[arg];
+    if (arg === "path" && mainProcess["platform"] === "win32") {
+      // result = "/" + result.replace(/\\/, "/");
+      result = result.split(path.sep);
+      result = result.join("/");
+      result = "/" + result;
+    }
+    return result;
+  });
 
   app.on("activate", function () {
     // On macOS it's common to re-create a window in the app when the

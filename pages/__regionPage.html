@@ -1,0 +1,40 @@
+<div class="container-fluid">
+    <div class="row g-4">
+        <div class="col-12">
+            <div class="rounded h-100 p-4">
+                <!-- <h6 class="mb-4">Daftar wilayah</h6> -->
+
+                <input type="hidden" id="idSrc">
+                <input type="hidden" id="idPrefSrc" value="p">
+                <input type="hidden" id="idPid">
+                <input type="hidden" id="idPrefPid">
+                <div class="d-flex justify-content-between">
+                    <div class="p-2">
+                        <span id="regionBreadCrumbs">Province</span>
+                    </div>
+                    <div class="p-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="checkCovered">
+                            <label class="form-check-label" for="checkCovered">
+                                Covered
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                <table id="table-region" class="table table-striped dt-responsive nowrap" style="width:100%">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nama</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
