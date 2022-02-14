@@ -4,7 +4,7 @@ const path = require("path");
 const fs = require("fs");
 const axios = require("axios");
 
-const { print, getDefaultPrinter } = require("unix-print");
+const { print, getDefaultPrinter } = require("pdf-to-printer");
 
 function createWindow() {
   // Create the browser window.
@@ -51,8 +51,10 @@ app.whenReady().then(() => {
         writer.on("close", async () => {
           if (!error) {
             resolve(true);
-            const option = ["-o fit-to-page", "-o page-left=-15"];
-            const prin = await print(filePath, "zebri", option);
+            // const option = ["-o fit-to-page", "-o page-left=-15"];
+            // const prin = await print(filePath, "zebri", option);
+            const prin = await print(filePath);
+            console.log(prin);
             if (prin.stderr == "") {
               fs.unlinkSync(filePath);
             }
