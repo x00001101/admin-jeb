@@ -26,47 +26,6 @@ $.ajaxSetup({
   },
 });
 
-// myAlert dialog
-alertify.myDialog ||
-  alertify.dialog("myDialog", function factory() {
-    return {
-      main: function (content) {
-        this.setContent(content);
-      },
-      setup: function () {
-        return {
-          options: {
-            frameless: true,
-          },
-        };
-      },
-    };
-  });
-alertify.regionDialog ||
-  alertify.dialog(
-    "regionDialog",
-    function factory() {
-      return {
-        main: function (content) {
-          this.setContent(content);
-        },
-        setup: function () {
-          return {
-            buttons: [{ text: "Ok", key: 13 /*Enter*/ }],
-            focus: { element: 0 },
-            options: {
-              title: "Daftar Wilayah",
-              frameless: false,
-              startMaximized: true,
-            },
-          };
-        },
-      };
-    },
-    false,
-    "alert"
-  );
-
 (async ($) => {
   "use strict";
   const PATHURL = await getGlobalVar("path");

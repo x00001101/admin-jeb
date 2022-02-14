@@ -1,12 +1,11 @@
 <div class="container-fluid pt-4 px-4">
     <div class="row g-4">
         <div class="col-12">
-            <div class="rounded h-100 p-4">
-                <h6 class="mb-4">Form Pembuatan Pos Baru</h6>
+            <div class="rounded h-100 p-0">
                 <form>
                     <div class="mb-3">
                         <label for="idPost" class="form-label">Pos ID</label>
-                        <input type="text" class="form-control" id="txtPostId"
+                        <input type="text" style="text-transform: uppercase" class="form-control" id="txtPostId"
                             aria-describedby="postHelp" placeholder="Contoh: JBG-01">
                         <div id="postHelp" class="form-text">Kode TLC Post
                         </div>
@@ -21,7 +20,7 @@
                     <div class="mb-3">
                         <label for="idPost" class="form-label">Tipe Pos</label>
                         <select class="form-select mb-3" aria-label="Default select example" id="txtPostType">
-                            <option selected>- Pilih Tipe -</option>
+                            <option value=""selected>- Pilih Tipe -</option>
                             <option value="DP">Drop Point</option>
                             <option value="GT">Gateway</option>
                             <option value="TC">Transit Center</option>

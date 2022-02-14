@@ -1,3 +1,43 @@
+
+// myAlert dialog
+alertify.postDialog ||
+  alertify.dialog("postDialog", function factory() {
+    return {
+      main: function (content) {
+        this.setContent(content);
+      },
+      setup: function () {
+        return {
+          buttons: [{ text: "Ok" }],
+          options: {
+            title: "Form Pembuatan Pos Baru",
+            frameless: false,
+          },
+        };
+      },
+    };
+  }, false, 'alert');
+alertify.regionDialog ||
+  alertify.dialog(
+    "regionDialog",
+    function factory() {
+      return {
+        main: function (content) {
+          this.setContent(content);
+        },
+        setup: function () {
+          return {
+            buttons: [{ text: "Ok", key: 13 /*Enter*/ }],
+            focus: { element: 0 },
+            options: {
+              title: "Daftar Wilayah",
+              startMaximized: true,
+            },
+          };
+        },
+      };
+    }, false, 'alert');
+
 (($) => {
   "use strict";
 
@@ -114,7 +154,43 @@
   };
 
   const addPost = (res) => {
-    alertify.myDialog(res).resizeTo(600, 650);
+    alertify.postDialog(res).resizeTo(600, 650).set("onok", function (closeEvent) {
+      // send to server 
+
+      // check if data is empty 
+      const id = $("#txtPostId").val().toUpperCase(), 
+        name = $("#txtPostName").val(),
+        region_id = $("#txtDistrictId").val(),
+        type = $("#txtPostType").val();
+
+      if (id === "" || name === "" || region_id === "" || type === "") {
+        alertify.error("Data masih kosong!");
+        closeEvent.cancel = true;
+      }
+
+      $.ajax({
+        url: `${url}/posts`,
+        type: "POST",
+        dataType: "JSON",
+        data: {
+          id: id,
+          name: name,
+          region_id: region_id,
+          type: type,
+        },
+        beforeSend: (xhr) => {
+          xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
+        },
+        success: (res) => {
+          alertify.notify('Data berhasil disimpan!', 'success', 5, function() {});
+        },
+        statusCode: {
+          500: (err) => {
+            alertify.error("Gagal menyimpan data!")
+          }
+        }
+      })
+    });
     $("#btn_regionPage").click(function () {
       $.ajax({
         url: "pages/__regionPage.html",

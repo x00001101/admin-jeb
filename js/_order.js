@@ -147,6 +147,10 @@
           style: "multi+shift",
           selector: "td:nth-child(2)",
         },
+        dom: 'Bfrtip',
+        buttons: [
+            'csv', 'excel'
+        ]
         // order: [[1, "asc"]],
       });
     },
