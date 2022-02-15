@@ -173,4 +173,12 @@ $.ajaxSetup({
       getPage(id);
     });
   });
+  $(".dropdown-item").each((i, v) => {
+    $(v).click(function () {
+      const id = $(this).attr("id");
+      getPage(id);
+    });
+  });
+  
+
 })(jQuery);

@@ -1,0 +1,47 @@
+<div class="container-fluid pt-4 px-4">
+  <div class="row g-4">
+    <div class="col-12">
+      <div class="bg-light rounded h-100 p-4">
+        <h3>Printer Settings</h3>
+        <form id="frmPrinterSetting">
+          <div class="row mb-3">
+            <label for="printerName" class="col-sm-2 col-form-label">Printer Name</label>
+            <div class="col-sm-10">
+              <input id="printerName" placeholder="Default" type="text" class="form-control" id="inputEmail3">
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="orientation" class="col-sm-2 col-form-label">Orientation</label>
+            <div class="col-sm-10">
+              <select id="orientation" class="form-select mb-3">
+                <option value="portrait" selected>Portrait</option>
+                <option value="landscape">Landscape</option>
+              </select>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="scale" class="col-sm-2 col-form-label">Scale</label>
+            <div class="col-sm-10">
+              <select id="scale" class="form-select mb-3">
+                <option value="noscale" selected>No Scale</option>
+                <option value="shrink">Shrink</option>
+                <option value="fit">Fit</option>
+              </select>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="monochrome" class="col-sm-2 col-form-label">Monochrome</label>
+            <div class="col-sm-10">
+              <select id="monochrome" class="form-select mb-3">
+                <option value="false" selected>False</option>
+                <option value="true">True</option>
+              </select>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="js/_settingPrinter.js"></script>

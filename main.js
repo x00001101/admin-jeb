@@ -53,11 +53,7 @@ app.whenReady().then(() => {
             resolve(true);
             // const option = ["-o fit-to-page", "-o page-left=-15"];
             // const prin = await print(filePath, "zebri", option);
-            const prin = await print(filePath);
-            console.log(prin);
-            if (prin.stderr == "") {
-              fs.unlinkSync(filePath);
-            }
+            print(filePath).then(fs.unlinkSync(filePath));
           }
         });
       });
