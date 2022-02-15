@@ -3,6 +3,7 @@ const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
 const fs = require("fs");
 const axios = require("axios");
+const editJsonFile = require("edit-json-file");
 
 const { print, getDefaultPrinter } = require("pdf-to-printer");
 
@@ -31,6 +32,8 @@ function createWindow() {
 app.whenReady().then(() => {
   createWindow();
 
+  //get printersetting
+
   const url = "https://sandbag.jeb-deploy.com";
   ipcMain.on("printAwb", (event, id) => {
     const filePath = `temp/${id}.pdf`;
@@ -53,11 +56,37 @@ app.whenReady().then(() => {
             resolve(true);
             // const option = ["-o fit-to-page", "-o page-left=-15"];
             // const prin = await print(filePath, "zebri", option);
-            print(filePath).then(fs.unlinkSync(filePath));
+            let settings = JSON.parse(fs.readFileSync("setting.json"));
+            let settingPrinter = settings.settingPrinterWin32;
+            let options = {
+              orientation: settingPrinter.orientation,
+              scale: settingPrinter.scale,
+              monochrome: settingPrinter.monochrome
+            };
+            if (settingPrinterWin32.printer !== "") {
+              options.printer = settingPrinter.printer
+            }
+            print(filePath, options).then(fs.unlinkSync(filePath));
           }
         });
       });
     });
+  });
+
+  ipcMain.handle("setSettingPrinter", (event, object) => {    
+    const file = editJsonFile(`setting.json`);
+    file.set("settingPrinterWin32.printer", object.printer);
+    file.set("settingPrinterWin32.orientation", object.orientation);
+    file.set("settingPrinterWin32.scale", object.scale);
+    file.set("settingPrinterWin32.monochrome", object.monochrome);
+    file.save();
+    return "Setting Saved!";
+  });
+
+  ipcMain.handle("getSettingPrinter", (event) => {
+    let settings = JSON.parse(fs.readFileSync("setting.json"));
+    let settingPrinter = settings.settingPrinterWin32;
+    return settingPrinter;
   });
 
   var mainProcess = {

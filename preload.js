@@ -10,4 +10,12 @@ contextBridge.exposeInMainWorld("jeb", {
     const result = await ipcRenderer.invoke("getGlobalVar", variable);
     return result;
   },
+  setSettingPrinter: async (object) => {
+    const result = await ipcRenderer.invoke("setSettingPrinter", object);
+    return result;
+  },
+  getSettingPrinter: async () => {
+    const result = await ipcRenderer.invoke("getSettingPrinter");
+    return result;
+  }
 });
