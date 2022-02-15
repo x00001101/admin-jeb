@@ -1,7 +1,7 @@
 {
   "name": "JEBexpress",
   "version": "1.0.0",
-  "description": "A minimal Electron application",
+  "description": "JEB express - admin dashboard",
   "main": "main.js",
   "scripts": {
     "start": "electron ."
