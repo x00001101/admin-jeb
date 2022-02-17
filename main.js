@@ -5,7 +5,14 @@ const fs = require("fs");
 const axios = require("axios");
 const editJsonFile = require("edit-json-file");
 
-const { print, getDefaultPrinter } = require("pdf-to-printer");
+const isWin = process.platform === "win32";
+
+let requirePrinter = "pdf-to-printer";
+if (!isWin) {
+  requirePrinter = "unix-print";
+}
+
+const { print, getDefaultPrinter } = require(requirePrinter);
 
 function createWindow() {
   // Create the browser window.
@@ -56,17 +63,24 @@ app.whenReady().then(() => {
             resolve(true);
             // const option = ["-o fit-to-page", "-o page-left=-15"];
             // const prin = await print(filePath, "zebri", option);
-            let settings = JSON.parse(fs.readFileSync("setting.json"));
-            let settingPrinter = settings.settingPrinterWin32;
-            let options = {
-              orientation: settingPrinter.orientation,
-              scale: settingPrinter.scale,
-              monochrome: settingPrinter.monochrome
-            };
-            if (settingPrinterWin32.printer !== "") {
-              options.printer = settingPrinter.printer
+            var pr;
+            if (isWin) { 
+              let settings = JSON.parse(fs.readFileSync("setting.json"));
+              let settingPrinter = settings.settingPrinterWin32;
+              let options = {
+                orientation: settingPrinter.orientation,
+                scale: settingPrinter.scale,
+                monochrome: settingPrinter.monochrome
+              };
+              if (settingPrinterWin32.printer !== "") {
+                options.printer = settingPrinter.printer
+              }
+              pr = await print(filePath, options);
+            } else {
+              let opt = ["-o landscape", "-o fit-to-page"];
+              pr = await print(filePath, "zebri", opt);
             }
-            print(filePath, options).then(fs.unlinkSync(filePath));
+            console.log(pr);
           }
         });
       });
