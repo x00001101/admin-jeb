@@ -64,16 +64,16 @@ app.whenReady().then(() => {
             // const option = ["-o fit-to-page", "-o page-left=-15"];
             // const prin = await print(filePath, "zebri", option);
             var pr;
-            if (isWin) { 
+            if (isWin) {
               let settings = JSON.parse(fs.readFileSync("setting.json"));
               let settingPrinter = settings.settingPrinterWin32;
               let options = {
                 orientation: settingPrinter.orientation,
                 scale: settingPrinter.scale,
-                monochrome: settingPrinter.monochrome
+                monochrome: settingPrinter.monochrome,
               };
-              if (settingPrinterWin32.printer !== "") {
-                options.printer = settingPrinter.printer
+              if (settingPrinter.printer !== "") {
+                options.printer = settingPrinter.printer;
               }
               pr = await print(filePath, options);
             } else {
@@ -87,7 +87,7 @@ app.whenReady().then(() => {
     });
   });
 
-  ipcMain.handle("setSettingPrinter", (event, object) => {    
+  ipcMain.handle("setSettingPrinter", (event, object) => {
     const file = editJsonFile(`setting.json`);
     file.set("settingPrinterWin32.printer", object.printer);
     file.set("settingPrinterWin32.orientation", object.orientation);
