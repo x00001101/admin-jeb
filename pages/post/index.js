@@ -1,22 +1,26 @@
-
 // myAlert dialog
 alertify.postDialog ||
-  alertify.dialog("postDialog", function factory() {
-    return {
-      main: function (content) {
-        this.setContent(content);
-      },
-      setup: function () {
-        return {
-          buttons: [{ text: "Ok" }],
-          options: {
-            title: "Form Pembuatan Pos Baru",
-            frameless: false,
-          },
-        };
-      },
-    };
-  }, false, 'alert');
+  alertify.dialog(
+    "postDialog",
+    function factory() {
+      return {
+        main: function (content) {
+          this.setContent(content);
+        },
+        setup: function () {
+          return {
+            buttons: [{ text: "Ok" }],
+            options: {
+              title: "Form Pembuatan Pos Baru",
+              frameless: false,
+            },
+          };
+        },
+      };
+    },
+    false,
+    "alert"
+  );
 alertify.regionDialog ||
   alertify.dialog(
     "regionDialog",
@@ -36,7 +40,10 @@ alertify.regionDialog ||
           };
         },
       };
-    }, false, 'alert');
+    },
+    false,
+    "alert"
+  );
 
 (($) => {
   "use strict";
@@ -154,46 +161,51 @@ alertify.regionDialog ||
   };
 
   const addPost = (res) => {
-    alertify.postDialog(res).resizeTo(600, 650).set("onok", function (closeEvent) {
-      // send to server 
+    alertify
+      .postDialog(res)
+      .resizeTo(600, 650)
+      .set("onok", function (closeEvent) {
+        // send to server
 
-      // check if data is empty 
-      const id = $("#txtPostId").val().toUpperCase(), 
-        name = $("#txtPostName").val(),
-        region_id = $("#txtDistrictId").val(),
-        type = $("#txtPostType").val();
+        // check if data is empty
+        const id = $("#txtPostId").val().toUpperCase(),
+          name = $("#txtPostName").val(),
+          region_id = $("#txtDistrictId").val(),
+          type = $("#txtPostType").val();
 
-      if (id === "" || name === "" || region_id === "" || type === "") {
-        alertify.error("Data masih kosong!");
-        closeEvent.cancel = true;
-      }
-
-      $.ajax({
-        url: `${url}/posts`,
-        type: "POST",
-        dataType: "JSON",
-        data: {
-          id: id,
-          name: name,
-          region_id: region_id,
-          type: type,
-        },
-        beforeSend: (xhr) => {
-          xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
-        },
-        success: (res) => {
-          alertify.notify('Data berhasil disimpan!', 'success', 5, function() {});
-        },
-        statusCode: {
-          500: (err) => {
-            alertify.error("Gagal menyimpan data!")
-          }
+        if (id === "" || name === "" || region_id === "" || type === "") {
+          alertify.error("Data masih kosong!");
+          closeEvent.cancel = true;
         }
-      })
-    });
+
+        $.ajax({
+          url: `${url}/posts`,
+          type: "POST",
+          dataType: "JSON",
+          data: {
+            id: id,
+            name: name,
+            region_id: region_id,
+            type: type,
+          },
+          beforeSend: (xhr) => {
+            xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
+          },
+          success: (res) => {
+            alertify.notify("Data berhasil disimpan", "success", 2, () => {
+              $("#post").trigger("click");
+            });
+          },
+          statusCode: {
+            500: (err) => {
+              alertify.error("Gagal menyimpan data!");
+            },
+          },
+        });
+      });
     $("#btn_regionPage").click(function () {
       $.ajax({
-        url: "pages/__regionPage.html",
+        url: "pages/common/__regionPage.html",
         success: regionPage,
       });
     });
@@ -202,7 +214,7 @@ alertify.regionDialog ||
   $("#btn_addPost").click(function () {
     //launch it.
     $.ajax({
-      url: "pages/__addPost.html",
+      url: "pages/post/__addPost.html",
       success: addPost,
     });
   });
@@ -243,6 +255,15 @@ alertify.regionDialog ||
             defaultContent: "",
           },
           {
+            orderable: false,
+            className: "dt-center",
+            targets: 5,
+            data: null,
+            render: (data, type, row) => {
+              return "<button type='button' class='btn btn-danger btn-sm del'><i class='fa fa-trash'></i></button>";
+            },
+          },
+          {
             className: "dt-center",
             targets: 3,
           },
@@ -252,6 +273,33 @@ alertify.regionDialog ||
           selector: "td:first-child",
         },
         order: [[1, "asc"]],
+      });
+
+      $("#table-courier tbody").on("click", "button.del", function () {
+        var data = $("#table-courier")
+          .DataTable()
+          .row($(this).parents("tr"))
+          .data();
+        alertify.confirm(
+          "Hapus Data",
+          `ID: ${data.id}</br>
+          Nama: ${data.name}`,
+          () => {
+            $.ajax({
+              url: `${url}/posts/${data.id}`,
+              type: "DELETE",
+              beforeSend: (xhr) => {
+                xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
+              },
+              success: (res) => {
+                alertify.notify("Data deleted", "success", 2, () => {
+                  $("#post").trigger("click");
+                });
+              },
+            });
+          },
+          () => {}
+        );
       });
     },
     statusCode: {

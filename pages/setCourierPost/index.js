@@ -1,20 +1,25 @@
 alertify.coureirPostDialog ||
-  alertify.dialog("coureirPostDialog", function factory() {
-    return {
-      main: function (content) {
-        this.setContent(content);
-      },
-      setup: function () {
-        return {
-          buttons: [{ text: "Ok" }],
-          options: {
-            title: "Form Pos Kurir",
-            frameless: false,
-          },
-        };
-      },
-    };
-  }, false, 'alert');
+  alertify.dialog(
+    "coureirPostDialog",
+    function factory() {
+      return {
+        main: function (content) {
+          this.setContent(content);
+        },
+        setup: function () {
+          return {
+            buttons: [{ text: "Ok" }],
+            options: {
+              title: "Form Pos Kurir",
+              frameless: false,
+            },
+          };
+        },
+      };
+    },
+    false,
+    "alert"
+  );
 alertify.regionDialog ||
   alertify.dialog(
     "regionDialog",
@@ -34,7 +39,10 @@ alertify.regionDialog ||
           };
         },
       };
-    }, false, 'alert');
+    },
+    false,
+    "alert"
+  );
 
 (($) => {
   "use strict";
@@ -42,7 +50,6 @@ alertify.regionDialog ||
   const accessToken = localStorage.getItem("header") || Cookies.get("header");
   const regionPage = (res) => {
     alertify.regionDialog(res).set("onok", function (closeEvent) {
-
       if ($("#idSrc").val() !== "v") {
         alertify.error("Data yang dipilih tidak sesuai!");
         closeEvent.cancel = true;
@@ -52,7 +59,7 @@ alertify.regionDialog ||
       let data = $("#table-region").DataTable().rows(".selected").data();
       let ids = "";
       for (var i = 0; i < data.length; i++) {
-        ids+=data[i]["id"]+";";
+        ids += data[i]["id"] + ";";
       }
       ids = ids.slice(0, -1);
 
@@ -62,13 +69,18 @@ alertify.regionDialog ||
         type: "POST",
         dataType: "JSON",
         data: {
-          posts: ids
+          posts: ids,
         },
         beforeSend: (xhr) => {
           xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
         },
         success: (res) => {
-          alertify.notify('Data berhasil ditambahkan!', 'success', 5, function(){});
+          alertify.notify(
+            "Data berhasil ditambahkan!",
+            "success",
+            5,
+            function () {}
+          );
         },
         statusCode: {
           500: (err) => {
@@ -76,9 +88,9 @@ alertify.regionDialog ||
           },
           400: (err) => {
             console.log(err);
-          }
-        }
-      })
+          },
+        },
+      });
     });
     // call once
     get_region(0, "p", "");
@@ -157,11 +169,8 @@ alertify.regionDialog ||
             style: "multi+shift",
             selector: "td:nth-child(1)",
           },
-          dom: 'Blfrtip',
-          buttons: [
-            'selectAll',
-            'selectNone'
-          ],
+          dom: "Blfrtip",
+          buttons: ["selectAll", "selectNone"],
         });
         $("#table-region tbody").on("click", "button", function () {
           var data = $("#table-region")
@@ -192,7 +201,6 @@ alertify.regionDialog ||
 
   // load data tables
 
-
   $.ajax({
     url: `${url}/couriers`,
     type: "GET",
@@ -212,14 +220,14 @@ alertify.regionDialog ||
         columnDefs: [
           {
             orderable: false,
-            className: 'select-checkbox',
+            className: "select-checkbox",
             targets: 0,
-            defaultContent: '',
+            defaultContent: "",
           },
           {
             targets: 4,
             visible: false,
-            searchable: false
+            searchable: false,
           },
           {
             targets: 5,
@@ -231,13 +239,13 @@ alertify.regionDialog ||
 
               return button;
             },
-          }
+          },
         ],
         select: {
-          style: 'os',
-          selector: 'td:first-child'
+          style: "os",
+          selector: "td:first-child",
         },
-        order: [[ 1, 'asc' ]]
+        order: [[1, "asc"]],
       });
 
       $("#table-courier tbody").on("click", "button", function () {
@@ -246,20 +254,20 @@ alertify.regionDialog ||
           .row($(this).parents("tr"))
           .data();
         $.ajax({
-          url: "pages/__courierPost.html",
+          url: "pages/setCourierPost/__courierPost.html",
           success: (res) => {
-            alertify.coureirPostDialog(res).resizeTo(700,800);
+            alertify.coureirPostDialog(res).resizeTo(700, 800);
             $("#spName").text(data["fullName"]);
             $("#spPhone").text(data["phoneNumber"]);
             $("#spEmail").text(data["email"]);
             $("#dtId").val(data["id"]);
 
-            $("#addPost").click(function() {
+            $("#addPost").click(function () {
               $.ajax({
-                url: "pages/__regionPage.html",
+                url: "pages/common/__regionPage.html",
                 success: regionPage,
               });
-            })
+            });
 
             $.ajax({
               url: `${url}/couriers/getPost/${data.id}`,
@@ -278,8 +286,8 @@ alertify.regionDialog ||
                       data: null,
                       render: (data, type, row) => {
                         return data.Village.name;
-                      }
-                    }
+                      },
+                    },
                   ],
                   columnDefs: [
                     {
@@ -289,12 +297,11 @@ alertify.regionDialog ||
                       defaultContent: "",
                     },
                   ],
-                })
-              }
-            })
-
-          }
-        })
+                });
+              },
+            });
+          },
+        });
       });
     },
     statusCode: {

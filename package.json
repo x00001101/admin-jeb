@@ -4,7 +4,9 @@
   "description": "JEB express - admin dashboard",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
   },
   "repository": "https://github.com/x00001101/admin-jeb.git",
   "keywords": [
@@ -17,15 +19,48 @@
   "author": "GitHub",
   "license": "CC0-1.0",
   "devDependencies": {
+    "@electron-forge/cli": "^6.0.0-beta.63",
+    "@electron-forge/maker-deb": "^6.0.0-beta.63",
+    "@electron-forge/maker-rpm": "^6.0.0-beta.63",
+    "@electron-forge/maker-squirrel": "^6.0.0-beta.63",
+    "@electron-forge/maker-zip": "^6.0.0-beta.63",
     "electron": "^17.0.0"
   },
   "dependencies": {
     "axios": "^0.25.0",
     "bwip-js": "^3.0.4",
     "edit-json-file": "^1.7.0",
+    "electron-squirrel-startup": "^1.0.0",
     "pdf-to-printer": "^5.2.0",
     "pdfmake": "^0.2.4",
     "qrcode": "^1.5.0",
     "unix-print": "^1.1.0"
+  },
+  "config": {
+    "forge": {
+      "packagerConfig": {},
+      "makers": [
+        {
+          "name": "@electron-forge/maker-squirrel",
+          "config": {
+            "name": "JEBexpress"
+          }
+        },
+        {
+          "name": "@electron-forge/maker-zip",
+          "platforms": [
+            "darwin"
+          ]
+        },
+        {
+          "name": "@electron-forge/maker-deb",
+          "config": {}
+        },
+        {
+          "name": "@electron-forge/maker-rpm",
+          "config": {}
+        }
+      ]
+    }
   }
 }

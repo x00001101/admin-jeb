@@ -24,10 +24,48 @@ $.ajaxSetup({
   complete: () => {
     spinner();
   },
+  statusCode: {
+    500: (err) => {
+      alertify.alert("Server 500: " + err);
+    },
+    401: (err) => {
+      alertify.alert("Unautorized: " + err);
+    },
+  },
 });
 
 (async ($) => {
   "use strict";
+
+  // navigation
+  /*
+   * object {
+   *  @key: name of page;
+   *  @value: [ label, iconName ];
+   * }
+   */
+
+  var buttons = {
+    dashboard: ["Dashboard", "tachometer-alt"],
+    service: ["Services", "laptop"],
+    post: ["Posts", "home"],
+    setCourierPost: ["Set Courier Post", "id-badge"],
+    order: ["Orders", "list-alt"],
+    code: ["Codes", "th-large"],
+  };
+
+  const setNavBar = (buttons) => {
+    var nav = "";
+    for (const [key, value] of Object.entries(buttons)) {
+      nav += `<a id=\"${key}\" href=\"#\" class=\"nav-item nav-link\"><i class=\"fa fa-${value[1]} me-2\"></i>${value[0]}</a>`;
+    }
+    $("#main-nav").html(nav);
+  };
+
+  setNavBar(buttons);
+
+  // end navigation
+
   const PATHURL = await getGlobalVar("path");
   const removeActiveLinkClass = () => {
     $(".nav-item.nav-link").each((i, v) => {
@@ -157,7 +195,7 @@ $.ajaxSetup({
 
   const getPage = (pageName) => {
     $.ajax({
-      url: `pages/_${pageName}.html`,
+      url: `pages/${pageName}/index.html`,
       success: (res) => {
         $("#page-container").html(res);
         removeActiveLinkClass();
@@ -179,6 +217,4 @@ $.ajaxSetup({
       getPage(id);
     });
   });
-  
-
 })(jQuery);
