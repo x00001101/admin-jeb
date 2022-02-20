@@ -1,0 +1,31 @@
+<div class="container-fluid pt-4 px-4">
+  <div class="row g-4">
+      <div class="col-12">
+          <div class="rounded h-100 p-0">
+              <form>
+                  <div class="mb-3">
+                      <label for="" class="form-label">Attr.</label>
+                      <select id="attributesValue" class="form-select mb-3" aria-label="Select Attribute">
+                          <option value="" selected>- Pilih Attribute -</option>
+                          <option value="FINISH">Finish</option>
+                      </select>
+                  </div>
+              </form>
+              <input type="hidden" id="inCodeId">
+              <input id="btnAddAttribute" type="submit" class="btn btn-primary" value="Add">
+              <div class="table-responsive">
+                <table id="table-code-attributes" class="table table-striped dt-responsive nowrap" style="width: 100%;">
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <td>ID</td>
+                      <td>Attr.</td>
+                      <th></th>
+                    </tr>
+                  </thead>
+                </table>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>

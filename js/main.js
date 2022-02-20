@@ -16,9 +16,14 @@ var spinner = () => {
   }, 100);
 };
 
+const accessToken = localStorage.getItem("header") || Cookies.get("header");
+
 // ajax global setup
 $.ajaxSetup({
-  beforeSend: () => {
+  beforeSend: (xhr) => {
+    if (accessToken !== "") {
+      xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
+    }
     $("#spinner").toggleClass("show");
   },
   complete: () => {
@@ -30,6 +35,9 @@ $.ajaxSetup({
     },
     401: (err) => {
       alertify.alert("Unautorized: " + err);
+    },
+    404: (err) => {
+      alertify.alert("server return not found!");
     },
   },
 });
@@ -52,6 +60,7 @@ $.ajaxSetup({
     setCourierPost: ["Set Courier Post", "id-badge"],
     order: ["Orders", "list-alt"],
     code: ["Codes", "th-large"],
+    billingType: ["Bil Types", "circle"],
   };
 
   const setNavBar = (buttons) => {
@@ -124,9 +133,6 @@ $.ajaxSetup({
       url: `${url}/usersData`,
       type: "GET",
       async: false,
-      beforeSend: (xhr) => {
-        xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
-      },
       success: (res) => {
         return res;
       },
@@ -193,13 +199,13 @@ $.ajaxSetup({
     signout();
   });
 
-  const getPage = (pageName) => {
+  const getPage = (pageName, main) => {
     $.ajax({
       url: `pages/${pageName}/index.html`,
       success: (res) => {
         $("#page-container").html(res);
         removeActiveLinkClass();
-        $(`#${pageName}`).toggleClass("active");
+        if (main) $(`#${pageName}`).toggleClass("active");
       },
     });
   };
@@ -208,13 +214,13 @@ $.ajaxSetup({
   $(".nav-item.nav-link").each((i, v) => {
     $(v).click(function () {
       const id = $(this).attr("id");
-      getPage(id);
+      getPage(id, true);
     });
   });
   $(".dropdown-item").each((i, v) => {
     $(v).click(function () {
       const id = $(this).attr("id");
-      getPage(id);
+      getPage(id, false);
     });
   });
 })(jQuery);

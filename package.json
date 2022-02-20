@@ -6,7 +6,8 @@
   "scripts": {
     "start": "electron-forge start",
     "package": "electron-forge package",
-    "make": "electron-forge make"
+    "make": "electron-forge make",
+    "publish": "electron-forge publish"
   },
   "repository": "https://github.com/x00001101/admin-jeb.git",
   "keywords": [
@@ -27,6 +28,7 @@
     "electron": "^17.0.0"
   },
   "dependencies": {
+    "@electron-forge/publisher-github": "^6.0.0-beta.63",
     "axios": "^0.25.0",
     "bwip-js": "^3.0.4",
     "edit-json-file": "^1.7.0",
@@ -34,11 +36,23 @@
     "pdf-to-printer": "^5.2.0",
     "pdfmake": "^0.2.4",
     "qrcode": "^1.5.0",
-    "unix-print": "^1.1.0"
+    "unix-print": "^1.1.0",
+    "update-electron-app": "^2.0.1"
   },
   "config": {
     "forge": {
       "packagerConfig": {},
+      "publishers": [
+        {
+          "name": "@electron-forge/publisher-github",
+          "config": {
+            "repository": {
+              "owner": "x00001101",
+              "name": "admin-jeb"
+            }
+          }
+        }
+      ],
       "makers": [
         {
           "name": "@electron-forge/maker-squirrel",

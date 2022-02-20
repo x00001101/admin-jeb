@@ -1,8 +1,6 @@
 (($) => {
   "use strict";
 
-  const accessToken = localStorage.getItem("header") || Cookies.get("header");
-
   const formatDate = (date) => {
     const monthNames = [
       "01",
@@ -38,9 +36,6 @@
   $.ajax({
     url: `${url}/orders`,
     type: "GET",
-    beforeSend: (xhr) => {
-      xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
-    },
     success: (res) => {
       $("#table-order").DataTable({
         data: res,
@@ -147,10 +142,8 @@
           style: "multi+shift",
           selector: "td:nth-child(2)",
         },
-        dom: 'Bfrtip',
-        buttons: [
-            'csv', 'excel'
-        ]
+        dom: "Bfrtip",
+        buttons: ["csv", "excel"],
         // order: [[1, "asc"]],
       });
     },

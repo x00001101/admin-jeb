@@ -1,0 +1,38 @@
+<div class="container-fluid pt-4 px-4">
+  <div class="row g-4">
+      <div class="col-12">
+          <div class="rounded h-100 p-0">
+              <form>
+                <div class="mb-3">
+                  <label for="idBillingType" class="form-label">Type ID</label>
+                  <input type="text" style="text-transform: uppercase" class="form-control" id="idBillingType"
+                      aria-describedby="billingHelp" placeholder="Contoh: COD">
+                  <div id="billingHelp" class="form-text">Kode Payment Method
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label for="descriptionBillingType" class="form-label">Keterangan</label>
+                  <input type="text" class="form-control" id="descriptionBillingType"
+                      aria-describedby="descriptionHelp" placeholder="Contoh: Bayar langsung melalui kurir (Cash On Delivery)">
+                  <div id="descriptionHelp" class="form-text">Kode Payment Method
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label for="autoPaid" class="form-label">Auto Paid</label>
+                  <select class="form-select mb-3" aria-label="Select data tipe" id="autoPaid">
+                    <option value="false" selected>False</option>
+                    <option value="true">True</option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label for="payToCust" class="form-label">Pay To Cust</label>
+                  <select class="form-select mb-3" aria-label="Select data tipe" id="payToCust">
+                    <option value="false" selected>False</option>
+                    <option value="true">True</option>
+                  </select>
+                </div>
+              </form>
+          </div>
+      </div>
+  </div>
+</div>

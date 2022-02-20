@@ -54,9 +54,6 @@ alertify.serviceDialog ||
             set_price: set_price,
             description: description,
           },
-          beforeSend: (xhr) => {
-            xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
-          },
           success: (res) => {
             alertify.notify("Data berhasil disimpan", "success", 2, () => {
               $("#service").trigger("click");
@@ -78,15 +75,10 @@ alertify.serviceDialog ||
     });
   });
 
-  const accessToken = localStorage.getItem("header") || Cookies.get("header");
-
   // load data tables
   $.ajax({
     url: `${url}/services`,
     type: "GET",
-    beforeSend: (xhr) => {
-      xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
-    },
     success: (res) => {
       $("#table-service").DataTable({
         data: res,
@@ -138,9 +130,6 @@ alertify.serviceDialog ||
             $.ajax({
               url: `${url}/services/${data.id}`,
               type: "DELETE",
-              beforeSend: (xhr) => {
-                xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
-              },
               success: (res) => {
                 alertify.notify("Data berhasil dihapus", "success", 2, () => {
                   $("#service").trigger("click");

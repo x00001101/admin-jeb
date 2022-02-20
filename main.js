@@ -38,7 +38,12 @@ function createWindow() {
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
   createWindow();
+  updateApp = require("update-electron-app");
 
+  updateApp({
+    updateInterval: "1 hour",
+    notifyUser: true,
+  });
   //get printersetting
 
   const url = "https://sandbag.jeb-deploy.com";

@@ -1,0 +1,37 @@
+<div class="container-fluid pt-4 px-4">
+  <div class="row g-4">
+    <div class="col-12">
+      <div class="bg-light rounded h-100 p-4">
+        <h3>Variables Settings</h3>
+        <form id="frmPrinterSetting">
+          <div class="row mb-3">
+            <label for="converter" class="col-sm-2 col-form-label">Converter</label>
+            <div class="col-sm-10">
+              <input id="converter" placeholder="0.00" type="number" class="form-control">
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="courierPercentage" class="col-sm-2 col-form-label">Courier Percentage</label>
+            <div class="col-sm-10">
+              <input id="courierPercentage" placeholder="0.00" type="number" class="form-control">
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="ootPercentage" class="col-sm-2 col-form-label">Out of Town Percentage</label>
+            <div class="col-sm-10">
+              <input id="ootPercentage" placeholder="0.00" type="number" class="form-control">
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="courierPercentageBonus" class="col-sm-2 col-form-label">Bonus Percentage</label>
+            <div class="col-sm-10">
+              <input id="courierPercentageBonus" placeholder="0.00" type="number" class="form-control">
+            </div>
+          </div>
+        </form>
+        <input type="submit" id="saveVariable" class="btn btn-primary" value="Save">
+      </div>
+    </div>
+  </div>
+</div>
+<script src="pages/settingVariable/index.js"></script>

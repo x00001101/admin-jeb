@@ -47,7 +47,6 @@ alertify.regionDialog ||
 (($) => {
   "use strict";
 
-  const accessToken = localStorage.getItem("header") || Cookies.get("header");
   const regionPage = (res) => {
     alertify.regionDialog(res).set("onok", function (closeEvent) {
       if ($("#idSrc").val() !== "v") {
@@ -70,9 +69,6 @@ alertify.regionDialog ||
         dataType: "JSON",
         data: {
           posts: ids,
-        },
-        beforeSend: (xhr) => {
-          xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
         },
         success: (res) => {
           alertify.notify(
@@ -204,9 +200,6 @@ alertify.regionDialog ||
   $.ajax({
     url: `${url}/couriers`,
     type: "GET",
-    beforeSend: (xhr) => {
-      xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
-    },
     success: (res) => {
       $("#table-courier").DataTable({
         data: res,
@@ -269,37 +262,7 @@ alertify.regionDialog ||
               });
             });
 
-            $.ajax({
-              url: `${url}/couriers/getPost/${data.id}`,
-              type: "GET",
-              dataType: "JSON",
-              beforeSend: (xhr) => {
-                xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
-              },
-              success: (res) => {
-                $("#table-courier-post").DataTable({
-                  data: res,
-                  columns: [
-                    { data: null },
-                    { data: "VillageId" },
-                    {
-                      data: null,
-                      render: (data, type, row) => {
-                        return data.Village.name;
-                      },
-                    },
-                  ],
-                  columnDefs: [
-                    {
-                      orderable: false,
-                      className: "select-checkbox",
-                      targets: 0,
-                      defaultContent: "",
-                    },
-                  ],
-                });
-              },
-            });
+            loadDataCourierPosts(data.id);
           },
         });
       });
@@ -310,4 +273,60 @@ alertify.regionDialog ||
       },
     },
   });
+
+  const loadDataCourierPosts = (id) => {
+    $.ajax({
+      url: `${url}/couriers/getPost/${id}`,
+      type: "GET",
+      dataType: "JSON",
+      success: (res) => {
+        $("#table-courier-post").DataTable({
+          data: res,
+          columns: [
+            { data: null },
+            { data: "VillageId" },
+            {
+              data: null,
+              render: (data, type, row) => {
+                return data.Village.name;
+              },
+            },
+          ],
+          columnDefs: [
+            {
+              orderable: false,
+              className: "select-checkbox",
+              targets: 0,
+              defaultContent: "",
+            },
+            {
+              data: null,
+              className: "dt-center",
+              targets: 3,
+              render: (data, type, row) => {
+                return "<button type='button' class='btn btn-danger btn-sm del'><i class='fa fa-trash'></i></button>";
+              },
+            },
+          ],
+        });
+
+        $("#table-courier-post tbody").on("click", "button.del", function () {
+          var data = $("#table-courier-post")
+            .DataTable()
+            .row($(this).parents("tr"))
+            .data();
+          $.ajax({
+            url: `${url}/courier/delPost/${data.id}`,
+            type: "DELETE",
+            success: (res) => {
+              alertify.success("Data Deleted");
+              $("#table-courier-post tbody").unbind();
+              $("#table-courier-post").DataTable().destroy();
+              loadDataCourierPosts(id);
+            },
+          });
+        });
+      },
+    });
+  };
 })(jQuery);

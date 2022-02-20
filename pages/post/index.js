@@ -188,9 +188,6 @@ alertify.regionDialog ||
             region_id: region_id,
             type: type,
           },
-          beforeSend: (xhr) => {
-            xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
-          },
           success: (res) => {
             alertify.notify("Data berhasil disimpan", "success", 2, () => {
               $("#post").trigger("click");
@@ -218,14 +215,10 @@ alertify.regionDialog ||
       success: addPost,
     });
   });
-  const accessToken = localStorage.getItem("header") || Cookies.get("header");
   // load data tables
   $.ajax({
     url: `${url}/posts`,
     type: "GET",
-    beforeSend: (xhr) => {
-      xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
-    },
     success: (res) => {
       $("#table-courier").DataTable({
         data: res,
@@ -288,9 +281,6 @@ alertify.regionDialog ||
             $.ajax({
               url: `${url}/posts/${data.id}`,
               type: "DELETE",
-              beforeSend: (xhr) => {
-                xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
-              },
               success: (res) => {
                 alertify.notify("Data deleted", "success", 2, () => {
                   $("#post").trigger("click");

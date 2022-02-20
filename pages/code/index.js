@@ -45,13 +45,9 @@ alertify.setCodeAttributes ||
 
 (($) => {
   // load data tables
-  const accessToken = localStorage.getItem("header") || Cookies.get("header");
   $.ajax({
     url: `${url}/codes`,
     type: "GET",
-    beforeSend: (xhr) => {
-      xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
-    },
     success: (res) => {
       $("#table-code").DataTable({
         data: res,
@@ -92,7 +88,72 @@ alertify.setCodeAttributes ||
         ],
       });
 
-      $("#table-code tbody").on("click", "button.opt", function () {});
+      $("#table-code tbody").on("click", "button.opt", function () {
+        var data = $("#table-code")
+          .DataTable()
+          .row($(this).parents("tr"))
+          .data();
+        $.ajax({
+          url: `pages/code/__setAttributes.html`,
+          success: (res) => {
+            alertify.setCodeAttributes(res).resizeTo(700, 600);
+            $("#inCodeId").val(data.id);
+            $.ajax({
+              url: `${url}/codeAttributes/${data.id}`,
+              type: "GET",
+              success: (res) => {
+                $("#table-code-attributes").DataTable({
+                  data: res,
+                  columns: [
+                    { data: null },
+                    { data: "id" },
+                    { data: "value" },
+                    { data: null },
+                  ],
+                  columnDefs: [
+                    {
+                      orderable: false,
+                      className: "select-checkbox",
+                      targets: 0,
+                      defaultContent: "",
+                    },
+                    {
+                      orderable: false,
+                      className: "dt-center",
+                      targets: 3,
+                      defaultContent: "",
+                    },
+                  ],
+                });
+                $("#btnAddAttribute").click(() => {
+                  var inCodeId = $("#inCodeId").val();
+                  var value = $("#attributesValue").val();
+                  if (value == "") {
+                    alertify.error("Data masih kosong");
+                    return false;
+                  }
+                  $.ajax({
+                    url: `${url}/codes/${inCodeId}`,
+                    type: "PATCH",
+                    dataType: "JSON",
+                    data: {
+                      value: value,
+                    },
+                    success: (res) => {
+                      alertify.notify("Data berhasil ditambahkan", "success");
+                    },
+                    statusCode: {
+                      403: (err) => {
+                        alertify.error(err.responseJSON.error);
+                      },
+                    },
+                  });
+                });
+              },
+            });
+          },
+        });
+      });
       $("#table-code tbody").on("click", "button.del", function () {
         var data = $("#table-code")
           .DataTable()
@@ -106,9 +167,6 @@ alertify.setCodeAttributes ||
             $.ajax({
               url: `${url}/codes/${data.id}`,
               type: "DELETE",
-              beforeSend: (xhr) => {
-                xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
-              },
               success: (res) => {
                 alertify.notify("Data berhasil dihapus", "success", 2, () => {
                   $("#code").trigger("click");
@@ -155,9 +213,6 @@ alertify.setCodeAttributes ||
         id: id.toUpperCase(),
         name: nama,
         description: keterangan,
-      },
-      beforeSend: (xhr) => {
-        xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
       },
       success: (res) => {
         alertify.notify("Saved", "success", 2, () => {
